@@ -19,15 +19,17 @@ jobs:
       - name: Copy the glass from the public repo
         run: |
           set -euo pipefail
-          base=https://raw.githubusercontent.com/EssekerDev/claudedesk-board/main
+          base=https://raw.githubusercontent.com/EssekerDev/claudedesk-board/90e082a1e6f941d6219949a5d83ce6c58a3a3832
           for f in index.html app.css app.js desk.js desk.wasm; do
             curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 "$base/$f" -o "$f"
           done
-          echo "daeb42e37d1afcc24f82a7f3f9c27a387e14bab2  desk.wasm" | sha1sum -c -
-          test "$(wc -c < desk.wasm)" -eq 132989
+          echo "7871032251034ac23bcfb7bc9e0d1e6a73cb42fe  desk.wasm" | sha1sum -c -
+          test "$(wc -c < desk.wasm)" -eq 132868
+          grep -A8 '#glass' app.css | grep -q 'border-radius' && exit 1 || true
           printf '\n' > .nojekyll
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html app.css app.js desk.js desk.wasm .nojekyll
-          git commit -m "Publish the board glass"
+          git diff --cached --quiet && exit 0
+          git commit -m "Publish the square glass"
           git push
