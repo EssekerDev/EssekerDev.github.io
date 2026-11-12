@@ -19,12 +19,12 @@ jobs:
       - name: Copy the glass from the public repo
         run: |
           set -euo pipefail
-          base=https://raw.githubusercontent.com/EssekerDev/claudedesk-board/ba5e3acbea9d3b643a40b025dfa29f87eaef18e1
+          base=https://raw.githubusercontent.com/EssekerDev/claudedesk-board/7160c2130b7bab57f57a49beb57b8d8d28c9d9fe
           for f in index.html app.css app.js desk.js desk.wasm; do
             curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 "$base/$f" -o "$f"
           done
-          echo "d63da27598fc67f88d9e942e1811fd62c88762a5  desk.wasm" | sha1sum -c -
-          test "$(wc -c < desk.wasm)" -eq 132771
+          echo "09bb7268c9da3f5c06caf6a9fe642c59ff329bcb  desk.wasm" | sha1sum -c -
+          test "$(wc -c < desk.wasm)" -eq 132599
           python3 - << 'PY'
           css = open("app.css").read()
           i = css.find("#glass")
@@ -37,5 +37,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html app.css app.js desk.js desk.wasm .nojekyll
           git diff --cached --quiet && exit 0
-          git commit -m "Publish the terminal footer"
+          git commit -m "Publish the voice waveform"
           git push
