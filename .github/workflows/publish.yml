@@ -19,12 +19,12 @@ jobs:
       - name: Copy the glass from the public repo
         run: |
           set -euo pipefail
-          base=https://raw.githubusercontent.com/EssekerDev/claudedesk-board/ec94e18230c03ee3a711a67b4af633b33c70206d
+          base=https://raw.githubusercontent.com/EssekerDev/claudedesk-board/ba5e3acbea9d3b643a40b025dfa29f87eaef18e1
           for f in index.html app.css app.js desk.js desk.wasm; do
             curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 "$base/$f" -o "$f"
           done
-          echo "4fdb5d46195100165039515ce106b793fda2340f  desk.wasm" | sha1sum -c -
-          test "$(wc -c < desk.wasm)" -eq 116640
+          echo "d63da27598fc67f88d9e942e1811fd62c88762a5  desk.wasm" | sha1sum -c -
+          test "$(wc -c < desk.wasm)" -eq 132771
           python3 - << 'PY'
           css = open("app.css").read()
           i = css.find("#glass")
@@ -37,5 +37,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html app.css app.js desk.js desk.wasm .nojekyll
           git diff --cached --quiet && exit 0
-          git commit -m "Publish the three-band glass"
+          git commit -m "Publish the terminal footer"
           git push
